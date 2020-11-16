@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -37,6 +37,9 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(),
+      darkTheme: ThemeData.dark(),
       title: 'Biblia ES',
       home: Scaffold(
           appBar: AppBar(
@@ -52,35 +55,55 @@ class _MainPageState extends State<MainPage> {
                   shrinkWrap: true,
                   itemCount: 66,
                   itemBuilder: (context, i) {
-                    return ExpansionTile(
-                      title: Text(snapshot.data[i]['title']),
-                      children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          itemCount: snapshot.data[i]['chapters'].length,
-                          itemBuilder: (context, h) {
-                            return ExpansionTile(
-                              title: Text('Capitulo ' + (h + 1).toString()),
-                              children: [
-                                ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: snapshot.data[i]['chapters'][h]['verses'].length,
-                                  itemBuilder: (context, j) {
-                                    return ListTile(
-                                      title:
-                                          Text((j+1).toString() + '. ' + snapshot.data[i]['chapters'][h]['verses'][j]['text']),
-                                    );
-                                  },
-                                )
-                              ],
-                            );
-                          },
-                        )
-                      ],
+                    return Card(
+                      child: ExpansionTile(
+                        leading: Icon(Icons.book),
+                        title: Text(snapshot.data[i]['title']),
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: snapshot.data[i]['chapters'].length,
+                            itemBuilder: (context, h) {
+                              return Container(
+                                child: ExpansionTile(
+                                  leading: Icon(Icons.file_copy),
+                                  title: Text('Capitulo ' + (h + 1).toString()),
+                                  children: [
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: snapshot
+                                          .data[i]['chapters'][h]['verses']
+                                          .length,
+                                      itemBuilder: (context, j) {
+                                        return Container(
+                                          padding: EdgeInsets.only(
+                                              bottom: 5.0,
+                                              top: 5.0,
+                                              left: 20.0,
+                                              right: 5.0),
+                                          decoration: BoxDecoration(
+                                              border: Border(
+                                                  bottom: BorderSide(
+                                                      color: Colors.grey,
+                                                      width: 0.2))),
+                                          child: Text((j + 1).toString() +
+                                              '. ' +
+                                              snapshot.data[i]['chapters'][h]
+                                                  ['verses'][j]['text']),
+                                        );
+                                      },
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          )
+                        ],
+                      ),
                     );
                   },
                 );
