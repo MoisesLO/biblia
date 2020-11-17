@@ -1,7 +1,6 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:convert';
 
 // Variable datos
 var data;
@@ -90,10 +89,13 @@ class _MainPageState extends State<MainPage> {
                                                   bottom: BorderSide(
                                                       color: Colors.grey,
                                                       width: 0.2))),
-                                          child: Text((j + 1).toString() +
-                                              '. ' +
-                                              snapshot.data[i]['chapters'][h]
-                                                  ['verses'][j]['text']),
+                                          child: Text(
+                                            (j + 1).toString() +
+                                                '. ' +
+                                                snapshot.data[i]['chapters'][h]
+                                                    ['verses'][j]['text'],
+                                            style: TextStyle(fontSize: 15),
+                                          ),
                                         );
                                       },
                                     )
